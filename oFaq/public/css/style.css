@@ -1,0 +1,187 @@
+
+body {
+    text-align: center;
+    font-family: 'Manjari', sans-serif;
+
+}
+
+.all {
+    margin-top: 2em;
+}
+
+.add_date {
+    font-size: 0.8em;
+    text-align: right;
+    margin-right: 1em;
+}
+
+.single_question {
+    width: 50%;
+    background-color: #46b5fc;
+    border-radius: 20px;
+}
+
+.single_question_tag {
+    margin: auto;
+}
+
+.question_home {
+    margin:auto;
+    text-align: left;
+}
+
+.body {
+    width: 70%;
+    margin: auto;
+    background-color: aliceblue;
+}
+
+.reponse {
+    margin-bottom: 2em;
+    background-color:  #06c841;
+    border-radius: 20px;
+    width: 50%;
+
+
+}
+
+.member_space {
+    width: 20%;
+    text-align: left;
+    margin: 5em auto;
+}
+
+.tag {
+    background-color: #27c6df;
+    padding: 0.5em;
+    border-radius: 100px;
+}
+
+.tag_single_question {
+    display: inline;
+    text-align: start;
+    font-size: 1em;
+    background-color: inherit;
+    margin: .4em;
+    color: white;
+}
+
+.tag_single_question:hover {
+    text-decoration: underline;
+}
+
+.login_form {
+    width: 30%;
+    margin: auto;
+}
+
+.admin_form,
+.tag_form,
+.question_form,
+.register_form {
+    width: 50%;
+    margin: auto;
+}
+
+a {
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.moderated {
+    filter: blur(2px);
+    background-color: rgb(220, 239, 255);
+    margin-top: 3em;
+}
+
+.moderated:hover {
+    filter: none;
+    opacity: none;
+}
+
+.hidden_btn {
+    text-align: right;
+    margin-top: 1em;
+}
+
+.global {
+display: flex;
+flex-direction: row-reverse;
+}
+
+.add_answer {
+    margin-top: 1em;
+}
+
+.user_question,
+.user_answer {
+    border: solid 1px black;
+    width: 30%;
+    margin:auto;
+}
+
+.pagination {
+    font-size: 1.1em;
+    padding-top: 1em;
+}
+
+.user_roles {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid lightgray;
+    width: 30%;
+    margin: auto;
+}
+
+.tag_container {
+    width: 50%;
+    margin: auto;
+}
+
+.question_title {
+    margin-top: 1em;
+}
+
+.questions_home {
+    width: 40%;
+    margin: auto;
+}
+
+.navtag {
+    justify-content: center;
+}
+
+.content_question {
+    text-align: center;
+}
+
+.foot {
+    height: 8em;
+    background-color: #17a2b8;
+    line-height: 8em;
+    margin-top: 3em;
+}
+
+.intro {
+    margin-bottom: 4em;
+}
+.fa-play-circle {
+    color: green;
+    font-size: 1em;
+}
+
+.fa-stop-circle {
+    color: red;
+    font-size: 1em;
+}
+
+.approved {
+    border: 5px solid blue;
+    margin-bottom: 2em;
+    background-color:  #06c841;
+    border-radius: 20px;
+    width: 50%;
+}

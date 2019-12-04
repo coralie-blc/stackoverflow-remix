@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <h1>Inscription</h1>
+    
+    
+    {{ form(registerForm, {'attr': {'class':'register_form'}}) }}
+    {# Lien de connexion #}
+    <a href="{{ path('app_login') }}">Se connecter</a>
+{% endblock %}

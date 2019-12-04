@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Personnel{% endblock %}
+
+{% block body %}
+    <div class="member_space">
+        <h2>Espace personnel.</h2>
+        <p>Email : {{ user.email }} </p>
+        <p>Rôle : {{ user.roles[0] }} </p>
+        <p>Prénom : {{ user.firstname }} </p>
+        <p>Nom : {{ user.lastname }} </p>
+        <a href="{{ path('edit_profil') }}"><h3><i class="far fa-keyboard"></i> Modifier mes infos.</h3></a>
+    </div>
+
+<div class="user_question">
+    <h3>Questions posées.</h3>
+    {% for question in user.question %}
+        <li> <a href="{{ path('single_question', {'question': question.id}) }}">{{ question }}</a></li>
+    {% endfor %}
+</div>
+
+<div class="user_answer">
+    <h3>Réponses apportées.</h3>
+    {% for reponse in user.answer %}
+        <li>{{ reponse }} </li>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

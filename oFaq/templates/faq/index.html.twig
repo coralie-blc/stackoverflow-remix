@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}O'FAQ{% endblock %}
+
+{% block body %}
+    <h1>Bienvenue sur O'Faq</h1>
+        {% if app.user %}
+            <p class"intro"><i class="far fa-play-circle"></i> Vous êtes connecté.</p>
+        {% else %}
+            <p class"intro"><i class="far fa-stop-circle"></i> Vous êtes ici en simple visiteur.</p>
+        {% endif %}
+
+    {# Flashmessages #}
+    {% for messageType, messageList in app.flashes %}
+        {% for message in messageList %}
+            <div class="alert alert-{{ messageType }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Bouton masquer pour admin #}
+    {% for question in questions %}
+        {% if question.visible %}
+            {% if is_granted('ROLE_MODERATEUR') %}
+                <div class="col-md-4 question_home">
+                    <form class="hidden_btn" method="POST" action="{{ path('question_hidden', {question : question.id}) }} ">
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-eye-slash"></i> Masquer</button>
+                        <input type="hidden" name="token" value="{{ csrf_token('hide') }}"/>
+                    </form>
+            {% endif %}
+                    <li class="list-group-item">     
+                        {% for tag in question.tag %}
+                            <a href="{{ path('tag_questions', {tag : tag.id}) }} "><span class="tag"><i class="fas fa-indent"></i> {{ tag }}</span></a> 
+                        {% endfor %}
+                            <a href="{{ path('single_question', {'question': question.id}) }}">
+                                <p class="question_title">{{question.title}} ?</p>
+                                <p class="content_question">{{ question.content }} </p>
+                            </a>  
+                        <a href="{{ path('single_question', {'question': question.id}) }}"><p><i class="far fa-comment-dots"></i> {{ question.answer|length }}</p></a> 
+                            <p class="add_date">Posée par {{ question.user.firstname }} {{ question.user.lastname }} - ajoutée le: {{ question.createdAt|date('d/m/Y à H:i') }}</p>
+                            <a class="btn btn-link js-like" href="{{ path('question_like', {'question': question.id}) }}">
+                                {% if app.user and question.isLikedByUser(app.user) %}
+                                    <i class="fas fa-thumbs-down"></i></i>
+                                {% else %}
+                                    <i class="far fa-thumbs-up"></i>
+                                {% endif %}
+                            <span class="js-likes">{{ question.likes|length }} </span>
+                            <span class="js-label">Je vote</span>
+                        </a>
+                    </li>
+                </div>
+        {% endif %}
+    {% endfor %}
+
+    {# Pagination #}
+    <nav aria-label="pagination pagination-lg">
+        <ul class="pagination justify-content-center">
+            <div class="navigation">
+                {{ knp_pagination_render(questions) }}
+            </div>
+        </ul>
+    </nav>
+
+    {# Partie admin, afficher les q? masquées #}
+    {% if is_granted('ROLE_MODERATEUR') %}
+    <hr>
+        <div class="col-md-4 question_home moderated">
+            <h4 class="moderated_answers_title">Ces questions ont été masquées. Elles ne sont visibles que par les Modérateurs et Admins.</h4>
+            {% for question in hiddenQuestions %}
+                <li class="list-group-item">     
+                    {% for tag in question.tag %}
+                        <a href="{{ path('tag_questions', {tag : tag.id}) }} "><span class="tag"><i class="fas fa-indent"></i> {{ tag }}</span></a> 
+                    {% endfor %}
+                    <form method="POST" action="{{ path('question_visible' , {'question' : question.id }) }}">
+                        <button type="submit" class="btn btn-success" ><i class="far fa-eye"></i>Afficher</button>
+                        <input type="hidden" name="token" value="{{ csrf_token('show') }}"/>
+                    </form>  
+                    <p class="question_title">{{question.title}} ?</p>
+                    <p class="content_question">{{ question.content }}</p>
+                    <a href="{{ path('single_question', {'question': question.id}) }}"><p><i class="far fa-comment-dots"></i> {{ question.answer|length }}</p></a> 
+                    <p class="add_date">Posée par {{ question.user.firstname }} {{ question.user.lastname }} - ajoutée le: {{ question.createdAt|date('d/m/Y à H:i') }}</p>
+                </li>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

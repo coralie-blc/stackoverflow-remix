@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des users.{% endblock %}
+
+{% block body %}
+
+    {# Flashmessages #}
+    {% for messageType, messageList in app.flashes %}
+        {% for message in messageList %}
+            <div class="alert alert-{{ messageType }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {% for user in users %}
+    <div class="user_roles">
+        <a href="{{ path('admin_user_edit', {user : user.id})  }} ">{{ user.firstname }} {{ user.lastname }} <i class="fas fa-caret-right"></i> {{ user.roles[0] }}</a> 
+    </div>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Personnel{% endblock %}
+
+{% block body %}
+
+    {{ form(UserType, {'attr': {'class':'admin_form'}}) }}
+
+{% endblock %}

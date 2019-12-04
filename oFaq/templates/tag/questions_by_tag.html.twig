@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block body %}
+
+    <h3>{{ tag.name }}</h3>
+
+    {% if tag.questions is empty %} 
+        <p>No Question in this tag</p>
+        <a href="{{path('add_question')}}"><p><i class="fas fa-chevron-right"></i> Sois le 1er à en ajouter une ! <i class="fas fa-chevron-left"></i></p></a>   
+    {% endif %}
+
+
+
+    <div class="tag_questions">
+        {% for question in tag.questions %}
+            {% if question.visible == 1 %}
+                <a href="{{ path('single_question', {'question': question.id}) }}">
+                    <div class="single_question single_question_tag">
+                        <h3>{{ question.title }} ?</h3>
+                        <p>{{ question.content }} </p>
+                        <p class="add_date">Posée par {{ question.user }} ajoutée le: {{ question.createdAt|date('d/m/Y à H:i') }}</p>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tag{% endblock %}
+
+{% block body %}
+
+{% for messageType, messageList in app.flashes %}
+    {% for message in messageList %}
+        <div class="alert alert-{{ messageType }}">{{ message }}</div>
+    {% endfor %}
+{% endfor %}
+
+
+    <h1>Modifier un Tag</h1>
+
+    {{ form(tagForm, {'attr': {'class':'tag_form'}}) }}
+
+    <a href="{{ path('tag_delete', {'tag': tag.id}) }}">
+        <button type="button" class="btn btn-danger">Supprimer</button>
+    </a>
+{% endblock %}

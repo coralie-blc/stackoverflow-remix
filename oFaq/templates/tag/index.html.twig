@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block body %}
+
+    <div class="tag_container">
+        {% for messageType, messageList in app.flashes %}
+            {% for message in messageList %}
+                <div class="alert alert-{{ messageType }}">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+
+
+        {% for tag in tags %}
+            <div class="single_tag">
+                <p>{{ tag.name }}
+
+                <a href="{{ path('tag_edit', {'id': tag.id}) }}">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                </a>
+                <a href="{{ path('tag_delete', {'tag': tag.id}) }}">
+                    <button type="button" class="btn btn-danger">Supprimer</button>
+                </a>
+            </div>
+        {% endfor %}
+
+        <a href="{{ path('add_tag') }}">
+            <button type="button" class="btn btn-success">Créer un tag</button>
+        </a>     
+    </div>
+
+{% endblock %}

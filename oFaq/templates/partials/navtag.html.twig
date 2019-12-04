@@ -1,0 +1,12 @@
+
+{% if tags is defined %}
+<nav id="main-nav" class="container navbar navbar-expand-lg navbar-info bg-info border rounded mb-3 navtag">
+  <ul class="navbar-nav">
+    {% for tag in tags %}
+    <li class="nav-item tag-item {% if mainNavHome is defined %}active{% endif %}">
+      <a class="nav-link" href="{{ path('tag_questions', {tag : tag.id}) }}">{{ tag.name }} </a>
+    </li>      
+    {% endfor %}
+    </ul>
+  </nav>
+{% endif %}

@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}O'FAQ{% endblock %}
+
+{% block body %}
+
+<div class="body">
+    {% for messageType, messageList in app.flashes %}
+        {% for message in messageList %}
+            <div class="alert alert-{{ messageType }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Question details #}
+    <div class="single_question">
+        {% for tag in question.tag %}
+            <a href="{{ path('tag_questions', {tag : tag.id}) }} "><p class="tag tag_single_question"><i class="fas fa-indent"></i> {{ tag }}</p></a> 
+        {% endfor %}
+        <h3>{{ question.title }} ?</h3>
+        <p class="content_question">{{ question.content }} </p>
+        <p class="add_date">Posée par {{ question.user.firstname }} {{ question.user.lastname }} - ajoutée le: {{ question.createdAt|date('d/m/Y à H:i') }}</p>
+    </div>
+
+    {# Answer details #}
+    {% for reponse in question.answer %}
+        {% if reponse.visible %}
+            <div class="global">
+                {# Answer approved by question's author #}
+                <div class="reponse {% if reponse.approve == 1 %} approved"  {% endif %}"">
+                    {% if is_granted('ROLE_MODERATEUR') %}
+                        <form class="hidden_btn" method="POST" action="{{ path('answer_hidden', {'answer' : reponse.id, 'question' : question.id}) }} ">
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-eye-slash"></i>Masquer</button>
+                            <input type="hidden" name="token" value="{{ csrf_token('hide') }}"/>
+                        </form>
+                    {% endif %}
+                    <p>{{ reponse.content }} </p>
+                    <p class="add_date">Ecrit par {{ reponse.user.firstname }} {{ reponse.user.lastname }} - le: {{ reponse.createdAt|date('d/m/Y à H:i') }}  </p>
+                    {% if reponse.approve == 1 %} 
+                            <p> <i class="far fa-smile"></i> Réponse approuvée par l'auteur de la question.</p>
+                    {% endif %}
+                    {% if app.user %}
+                        {% if app.user.id == question.user.id %}
+                            <form class="hidden_btn" method="POST" action="{{ path('answer_approve', {'answer' : reponse.id, 'question' : question.id}) }} ">
+                                <button type="submit" class="btn btn-success"><i class="far fa-check-square"></i> Approuver</button>
+                                <input type="hidden" name="token" value="{{ csrf_token('approve') }}"/>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div> 
+            </div>
+        {% endif %}        
+    {% endfor %}
+
+
+    <h3 class="add_answer">Apporter une réponse</h3>
+
+    {% if is_granted('ROLE_USER') %}
+        {# Add an answer #}
+        {{ form(answerForm, {'action': path('add_answer', {'question': question.id})} )}}
+    {% else %}
+        <p>Vous devez être authentifié pour poster une réponse.</p>
+        <ul class="navbar-nav">
+            <li class="nav-item {% if mainNavLogin is defined %}active{% endif %}">
+                <a class="nav-link" href="{{path('app_login')}}">Connexion</a>
+            </li>
+            <li class="nav-item {% if mainNavRegistration is defined %}active{% endif %}">
+                <a class="nav-link" href="{{path('app_register')}}">Inscription</a>
+            </li>
+        </ul>
+    {% endif %}
+
+
+    {# Admins/Moderators question control  #}
+    {% if is_granted('ROLE_MODERATEUR') %}
+    <hr>
+    <div class="moderated">
+        <h4 class="moderated_answers_title">Ces réponses ont été masquées. Elles ne sont visibles que par les Modérateurs et Admins.</h4>
+            {% for reponse in question.answer %}
+                {% if reponse.visible == 0 %}
+                    <div class="reponse">
+                        <form method="POST" action="{{ path('answer_visible' , {'answer' : reponse.id, 'question' : question.id }) }}">                                
+                            <button type="submit" class="btn btn-success" ><i class="far fa-eye"></i>Afficher</button>
+                            <input type="hidden" name="token" value="{{ csrf_token('show') }}"/>
+                        </form>  
+                        <p>{{ reponse.content }} </p>
+                        <p>Ecrit par {{ reponse.user.firstname }} {{ reponse.user.lastname }} - </p>
+                        <p>Le: {{ reponse.createdAt.date }} </p>
+                    </div> 
+                {% endif %}
+            {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
